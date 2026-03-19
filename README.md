@@ -34,6 +34,13 @@ The system exists in two distinct parts:
 1. **The Marketing Website** — A static HTML/CSS/JS multi-page site that presents VOOLT Group's services, courses, and pricing to the public.
 2. **The Academy Platform** — A private React SPA (Single Page Application) that serves as the complete learning environment for paying students and administrators.
 
+
+## Screenshots
+
+![Dashboard](assets/Screenshot%202026-03-19%20223548.png)
+![Leads Table](assets/Screenshot%202026-03-19%20223557.png)
+![Mobile View](assets/Screenshot%202026-03-19%20223609.png)
+
 ---
 
 ## Platform Architecture
@@ -242,4 +249,4 @@ VITE_N8N_WEBHOOK_URL=https://your-n8n.cloud/webhook/voolt-payment-webhook
 ## Author
 
 **Temiloluwa Adebayo** — AI Software Engineer  
-[GitHub](https://github.com/temiloluwa-adebayo) · [LinkedIn](https://linkedin.com/in/temiloluwa-adebayo)
+[GitHub](https://github.com/temiloluwa-adebayo) · [LinkedIn](www.linkedin.com/in/temiloluwa-adebayo-4843ba377)
