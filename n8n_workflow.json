@@ -1,0 +1,144 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "voolt-student-registration",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const password = Math.random().toString(36).slice(-10) + 'V!';\nreturn [{\n  json: {\n    ...items[0].json,\n    generatedPassword: password\n  }\n}];"
+      },
+      "name": "Generate Password",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ofpsahisveovewpcrlnv.supabase.co/auth/v1/signup",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mcHNhaGlzdmVvdmV3cGNybG52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NzQ5ODQsImV4cCI6MjA4OTI1MDk4NH0.YPbLWIqHN-slOW78ExEKxGj_D6G4fO5FzhF8IVZUxyo"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "email",
+              "value": "={{$node[\"Webhook\"].json[\"body\"][\"email\"]}}"
+            },
+            {
+              "name": "password",
+              "value": "={{$node[\"Generate Password\"].json[\"generatedPassword\"]}}"
+            },
+            {
+              "name": "data",
+              "value": "={{ { full_name: $node[\"Webhook\"].json[\"body\"][\"full_name\"], role: 'student' } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Supabase Register",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.whatsapp.com/v1/messages",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "to",
+              "value": "={{$node[\"Webhook\"].json[\"body\"][\"phone\"]}}"
+            },
+            {
+              "name": "message",
+              "value": "=Hello {{$node[\"Webhook\"].json[\"body\"][\"full_name\"]}! Welcome to VOOLT Academy. Your login: {{$node[\"Webhook\"].json[\"body\"][\"email\"]} / Pass: {{$node[\"Generate Password\"].json[\"generatedPassword\"]}}. App: https://voolt-academy.vercel.app"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "WhatsApp Notify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Password",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Password": {
+      "main": [
+        [
+          {
+            "node": "Supabase Register",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Register": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Notify": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
