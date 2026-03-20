@@ -37,9 +37,9 @@ The system exists in two distinct parts:
 
 ## Screenshots
 
-![Dashboard](assets/Screenshot%202026-03-19%20223548.png)
-![Leads Table](assets/Screenshot%202026-03-19%20223557.png)
-![Mobile View](assets/Screenshot%202026-03-19%20223609.png)
+![Admin Dashboard](assets/Screenshot%202026-03-20%20171622.png)
+![Student Dashboard](assets/Screenshot%202026-03-20%20172348.png)
+![Student Dashboard](assets/Screenshot%202026-03-20%20172402.png)
 
 ---
 
